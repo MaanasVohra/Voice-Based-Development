@@ -2,10 +2,15 @@
     <h5 align="center">Speech to text converter in javaScript</h5>
     <div class="container">
         <div class="jumbotron" id="putAnswer"></div>
-            <button class="btn btn-lg btn-primary" onclick="start();"><i class="fa fa-microphone"></i></button>  
+        <button class="btn btn-lg btn-primary" onclick="start();"><i class="fa fa-microphone"></i></button>  
     </div>    
+    <form action="/" method="POST">
+        <input id="putValue" name="inputString">
+        <button type="submit" class="btn btn-primary btn-lg">submit</button>
+    </form>
     <script type="text/javaScript">
         var writeAnswer = document.getElementById('putAnswer');
+        var writeValue = document.getElementById('putValue');
         function start() 
         {
             alert('please enable microphone and start the process!!!');
@@ -35,8 +40,10 @@
                     }
                     var msg = new SpeechSynthesisUtterance( transcript);
                         window.speechSynthesis.speak(msg);
-
+                        //alert(finalTranscripts);
                     writeAnswer.innerHTML = finalTranscripts + '<span style="color:#999">' + interimTranscripts + '</span>';
+                   
+                    writeValue.value = finalTranscripts + interimTranscripts;
                 };
                 speechRecognizer.onerror = function (event) {
                         alert('enable microphone!!!');
@@ -44,7 +51,8 @@
 				}else{
 					alert('Your browser is not supported. If google chrome, please upgrade!!!');
 				}
-			}
+            }
+       
     </script>
 
 <% include partials/footer %>
