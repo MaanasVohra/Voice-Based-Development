@@ -1,0 +1,17 @@
+{
+  "name": "speech-to-text",
+  "version": "1.0.0",
+  "description": "convert speech into text",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "praful Tondomker",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "node-wit": "^5.0.0"
+  }
+}
