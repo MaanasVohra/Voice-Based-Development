@@ -68,11 +68,11 @@
                 var req = JSON.stringify(res);
                 var output = "";
                 fetch('/', {
-                    method: 'PUT', // or 'PUT'
+                    method: 'POST', // or 'PUT'
                     body: JSON.stringify(res), // data can be `string` or {object}!
                     headers:{
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/x-www-form-urlencoded'   
                     }
                 }).then(res => res.json())
                 .then(response => console.log('Success:', JSON.stringify(response)))
