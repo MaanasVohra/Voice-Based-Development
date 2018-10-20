@@ -6,7 +6,11 @@
         <button class="btn btn-lg btn-primary" onclick="start();"><i class="fa fa-microphone"></i></button>  
     </div>    
    <div class="container" id="display">
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 1ef2e93e518454aa027bcbf09391af5172489613
    </div>
     <script type="text/javaScript">
         var writeAnswer = document.getElementById('putAnswer');
@@ -18,7 +22,11 @@
             if('webkitSpeechRecognition' in window)
             {
                 var speechRecognizer = new webkitSpeechRecognition();
+<<<<<<< HEAD
                 speechRecognizer.continuous = true;
+=======
+                speechRecognizer.continuous = false;
+>>>>>>> 1ef2e93e518454aa027bcbf09391af5172489613
                 speechRecognizer.interimResults = true;
                 speechRecognizer.lang = 'en-IN';
                 speechRecognizer.start();
@@ -44,7 +52,11 @@
                     window.speechSynthesis.speak(msg);
                     writeAnswer.innerHTML = finalTranscripts + '<span style="color:#999">' + interimTranscripts + '</span>';
                     
+<<<<<<< HEAD
                     setTimeout(getPosts(finalTranscripts+interimTranscripts), 5000);
+=======
+                    getPosts(finalTranscripts+interimTranscripts);
+>>>>>>> 1ef2e93e518454aa027bcbf09391af5172489613
                 };
                 
                 speechRecognizer.onerror = function (event) {
@@ -66,6 +78,7 @@
             .then(res => res.json())
             .then((res) => {
                 console.log(res);
+<<<<<<< HEAD
                 var req = JSON.stringify(res);
                 var output = "";
                 
@@ -97,6 +110,22 @@
                 error => console.log(error) // Handle the error response object
             );
         };
+=======
+                console.log("first");
+                var req = JSON.stringify(res);
+                var output = "";
+                fetch('/', {
+                    method: 'POST', // or 'PUT'
+                    body: JSON.stringify(res), // data can be `string` or {object}!
+                    headers:{
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/x-www-form-urlencoded'   
+                    }
+                }).then(res => res.json())
+                .then(response => console.log('Success:', JSON.stringify(response)))
+                //.catch(error => console.error('outputer:', error));
+            }); 
+>>>>>>> 1ef2e93e518454aa027bcbf09391af5172489613
        }
     </script>
 
