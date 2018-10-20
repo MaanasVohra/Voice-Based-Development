@@ -18,17 +18,13 @@ app.get("/", function(req, res){
 });
 
 app.post("/", function(req, res){
-    var inputVoice = req.body.inputString;
+    var inputVoice = req;
     var outPutMessage ;
-    client.message(inputVoice).then(function(result){
-        outPutMessage = result;
-    }).catch(function(e){
-        console.log('error handling!!!');
-    });
-    //console.log(outPutMessage.number);
+    console.log(req.body);
+    console.log('change');
     res.render("home");
 });
 
-app.listen(5000, function(){
+app.listen(4000, function(){
     console.log ("voice to speech has been started!!!");
 });
