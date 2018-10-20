@@ -1,30 +1,32 @@
+
 <% include partials/header %>
     <h5 align="center">Speech to text converter in javaScript</h5>
     <div class="container">
         <div class="jumbotron" id="putAnswer"></div>
         <button class="btn btn-lg btn-primary" onclick="start();"><i class="fa fa-microphone"></i></button>  
     </div>    
-    <form action="/" method="POST">
-        <input id="putValue" name="inputString">
-        <button type="submit" class="btn btn-primary btn-lg">submit</button>
-    </form>
+   <div class="container" id="display">
+
+   </div>
     <script type="text/javaScript">
         var writeAnswer = document.getElementById('putAnswer');
         var writeValue = document.getElementById('putValue');
-        function start() 
+        
+       function start() 
         {
             alert('please enable microphone and start the process!!!');
             if('webkitSpeechRecognition' in window)
             {
-				var speechRecognizer = new webkitSpeechRecognition();
-				speechRecognizer.continuous = true;
-				speechRecognizer.interimResults = true;
-				speechRecognizer.lang = 'en-IN';
-				speechRecognizer.start();
+                var speechRecognizer = new webkitSpeechRecognition();
+                speechRecognizer.continuous = true;
+                speechRecognizer.interimResults = true;
+                speechRecognizer.lang = 'en-IN';
+                speechRecognizer.start();
 
-				var finalTranscripts = '';
-				speechRecognizer.onresult = function(event){
-                    var interimTranscripts = '';
+                var finalTranscripts = '';
+                var interimTranscripts = '';
+                speechRecognizer.onresult = function(event){
+                    interimTranscripts = '';
                     for(var i = event.resultIndex; i < event.results.length; i++)
                     {
                         var transcript = event.results[i][0].transcript;
@@ -39,20 +41,63 @@
                         }
                     }
                     var msg = new SpeechSynthesisUtterance( transcript);
-                        window.speechSynthesis.speak(msg);
-                        //alert(finalTranscripts);
+                    window.speechSynthesis.speak(msg);
                     writeAnswer.innerHTML = finalTranscripts + '<span style="color:#999">' + interimTranscripts + '</span>';
-                   
-                    writeValue.value = finalTranscripts + interimTranscripts;
+                    
+                    setTimeout(getPosts(finalTranscripts+interimTranscripts), 5000);
                 };
+                
                 speechRecognizer.onerror = function (event) {
                         alert('enable microphone!!!');
-					};
-				}else{
-					alert('Your browser is not supported. If google chrome, please upgrade!!!');
-				}
+                    };
+                }else{
+                    alert('Your browser is not supported. If google chrome, please upgrade!!!');
+                }
             }
-       
+
+       function getPosts(inputString)
+       {
+            //= document.getElementById('putAnswer').innerHTML;
+            const q = encodeURIComponent(inputString);
+            const uri = 'https://api.wit.ai/message?q=' + q;
+            const auth = 'Bearer ' + 'RSNL2TFCK47R4QOS6NHWHFLTUSJYLHEI';
+            var req;
+            fetch(uri, {headers: {Authorization: auth}})
+            .then(res => res.json())
+            .then((res) => {
+                console.log(res);
+                var req = JSON.stringify(res);
+                var output = "";
+                
+                output += `
+                    <ul>
+                        <li> message_id:- ${res.msg_id}</li>
+                        <li> text:- ${res._text}</li>
+                        <li> action:- ${res.entities.action[0].value}</li>
+                        <li> type:- ${res.entities.type[0].value}</li>
+                        <li> name:- ${res.entities.name[0].value}</li>
+                        <li> json:- ${req}</li>
+                    </ul>
+                `;
+                document.getElementById('display').innerHTML = output;
+            }); 
+            var file = req;
+            const upload = (file) => {
+            fetch('http://localhost:4000/', { // Your POST endpoint
+                method: 'POST',
+                headers: {
+                "Content-Type": "You will perhaps need to define a content-type here"
+                },
+                body: file // This is your file object
+            }).then(
+                response => response.json() // if the response is a JSON object
+            ).then(
+                success => console.log(success) // Handle the success response object
+            ).catch(
+                error => console.log(error) // Handle the error response object
+            );
+        };
+       }
     </script>
 
 <% include partials/footer %>
