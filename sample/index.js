@@ -1,14 +1,7 @@
 var express = require ("express");
 var app = express();
 var bodyParser = require("body-parser");
-
-// CORS functionality
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
-
+var request = require('request');
 app.use (bodyParser.urlencoded({extended: true}));
 
 app.set ("view engine", "ejs")
@@ -28,10 +21,22 @@ app.post("/", function(req, res){
     var inputVoice = req;
     var outPutMessage ;
     console.log(req.body);
+    var options = {
+        uri: 'http://localhost:3001/sendData',
+        method: 'POST',
+        json: {
+            "message": req.body
+        }
+    }
+    request(options, function(error, response, body) {
+        if(!error && response.statusCode === 200) {
+            res.send("Successfully added new data");
+        }
+    });
     console.log('change');
     res.render("home");
 });
 
-app.listen(5000, function(){
+app.listen(4000, function(){
     console.log ("voice to speech has been started!!!");
 });
